@@ -3,10 +3,10 @@
 const W = 288;
 const H = 512;
 const BASE_Y = Math.floor(H * 0.79);   // 404
-const PIPE_GAP = 100;
+const PIPE_GAP = 130;
 const PIPE_W = 52;
 const PIPE_H = 320;
-const PIPE_SPACING = W / 2;            // 144 px entre tubos
+const PIPE_SPACING = 150;              // px entre tubos (original: 144)
 const SCROLL = 2;                      // px por frame (60 fps)
 const GRAVITY = 0.25;
 const FLAP_VEL = -4.5;
