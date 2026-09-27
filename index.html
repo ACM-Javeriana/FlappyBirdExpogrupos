@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flappy Bird · Aletea</title>
+  <link rel="icon" href="assets/sprites/yellowbird-midflap.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="split">
+    <section class="panel cam-panel">
+      <div class="cam-wrap">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <div id="flash" class="flap-flash">¡FLAP!</div>
+        <div id="status" class="status">Cámara apagada</div>
+        <div class="meter"><div id="meter-fill"></div><div id="meter-mark"></div></div>
+      </div>
+      <div class="controls">
+        <label>Sensibilidad
+          <input id="sensitivity" type="range" min="0.2" max="1.2" step="0.05" value="0.5">
+        </label>
+        <span class="hint">Aletea con los brazos · Espacio / clic también sirven</span>
+      </div>
+      <div id="start" class="start">
+        <img src="assets/sprites/yellowbird-midflap.png" alt="" width="68">
+        <h1>Flappy Bird</h1>
+        <p>Ponte frente a la cámara con los brazos visibles y <b>aletea</b> para volar.</p>
+        <button id="start-btn">Activar cámara y jugar</button>
+        <p id="start-error" class="error"></p>
+      </div>
+    </section>
+    <section class="panel game-panel">
+      <canvas id="game" width="288" height="512"></canvas>
+    </section>
+  </main>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

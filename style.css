@@ -1,0 +1,60 @@
+:root {
+  --bg: #111418;
+  --panel: #1a1f25;
+  --text: #f2f2f2;
+  --muted: #9aa4ae;
+  --accent: #f8c83c;
+  --good: #5ee27a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: hidden; }
+
+.split { display: flex; height: 100vh; height: 100dvh; }
+.panel { flex: 1 1 50%; min-width: 0; min-height: 0; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.cam-panel { background: var(--panel); padding: 16px; gap: 12px; }
+.game-panel { background: #000; }
+
+.cam-wrap { position: relative; width: 100%; max-height: calc(100% - 60px); aspect-ratio: 4 / 3;
+  border-radius: 12px; overflow: hidden; background: #000; }
+.cam-wrap video, .cam-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; transform: scaleX(-1); }
+
+.status { position: absolute; top: 12px; left: 12px; padding: 6px 10px; border-radius: 8px;
+  background: rgba(0,0,0,.6); font-size: 14px; }
+.status.ok { color: var(--good); }
+
+.flap-flash { position: absolute; top: 40%; left: 0; right: 0; text-align: center; font-size: 56px;
+  font-weight: 900; color: var(--accent); text-shadow: 0 4px 0 #000; opacity: 0;
+  transform: scale(.8); transition: opacity .25s, transform .25s; pointer-events: none; }
+.flap-flash.show { opacity: 1; transform: scale(1); transition: none; }
+
+.meter { position: absolute; right: 12px; top: 12px; bottom: 12px; width: 14px; border-radius: 7px;
+  background: rgba(255,255,255,.15); overflow: hidden; }
+#meter-fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--accent); }
+#meter-mark { position: absolute; left: 0; right: 0; height: 2px; background: #fff; top: 50%; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--muted); }
+.controls label { display: flex; gap: 8px; align-items: center; }
+
+.start { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 8px; padding: 24px; text-align: center; background: rgba(17,20,24,.94); }
+.start img { image-rendering: pixelated; }
+.start h1 { margin: 4px 0; font-size: 40px; color: var(--accent); }
+.start p { margin: 0; max-width: 360px; color: var(--muted); }
+.start button { margin-top: 12px; font: inherit; font-weight: 700; font-size: 18px; padding: 12px 22px;
+  border: 0; border-radius: 10px; background: var(--accent); color: #222; cursor: pointer; }
+.start button:disabled { opacity: .6; cursor: wait; }
+.start.hidden { display: none; }
+.error { color: #ff7b7b !important; min-height: 1.2em; }
+
+#game { height: 100%; max-width: 100%; aspect-ratio: 288 / 512; object-fit: contain;
+  image-rendering: pixelated; image-rendering: crisp-edges; cursor: pointer; touch-action: manipulation; }
+
+@media (max-aspect-ratio: 1/1) {
+  .split { flex-direction: column; }
+  .cam-panel { padding: 8px; gap: 6px; }
+  .controls .hint { display: none; }
+}
