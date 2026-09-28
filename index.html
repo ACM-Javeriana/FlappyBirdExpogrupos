@@ -22,13 +22,25 @@
           <input id="sensitivity" type="range" min="0.2" max="1.2" step="0.05" value="0.5">
         </label>
         <span class="hint">Aletea con los brazos · Espacio / clic también sirven</span>
+        <button id="menu-btn" class="linkbtn">Tabla / cambiar jugador</button>
       </div>
       <div id="start" class="start">
         <img src="assets/sprites/yellowbird-midflap.png" alt="" width="68">
         <h1>Flappy Bird</h1>
         <p>Ponte frente a la cámara con los brazos visibles y <b>aletea</b> para volar.</p>
+        <input id="player-name" type="text" maxlength="16" placeholder="Tu nombre" autocomplete="off">
         <button id="start-btn">Activar cámara y jugar</button>
+        <button id="noc-btn" class="linkbtn">Jugar sin cámara</button>
         <p id="start-error" class="error"></p>
+        <div class="board">
+          <h2>Clasificación</h2>
+          <div class="tabs">
+            <button class="tab active" data-kind="camera">Cámara</button>
+            <button class="tab" data-kind="click">Sin cámara</button>
+          </div>
+          <ol id="lb"></ol>
+          <button id="lb-reset" class="linkbtn">Borrar tabla</button>
+        </div>
       </div>
     </section>
     <section class="panel game-panel">

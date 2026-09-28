@@ -19,7 +19,7 @@ const BIRD_H = 24;
 const FLAP_FRAMES = [0, 1, 2, 1];      // up, mid, down, mid
 const STEP = 1000 / 60;
 
-const State = { READY: 0, PLAYING: 1, DYING: 2, OVER: 3 };
+export const State = { READY: 0, PLAYING: 1, DYING: 2, OVER: 3 };
 
 export class Game {
   constructor(canvas, sprites, sound) {
@@ -28,6 +28,7 @@ export class Game {
     this.ctx.imageSmoothingEnabled = false;
     this.s = sprites;
     this.sound = sound;
+    this.onGameOver = null;
     this.birdFrames = [sprites['yellowbird-upflap'], sprites['yellowbird-midflap'], sprites['yellowbird-downflap']];
     try { this.best = Number(localStorage.getItem('flappy-best')) || 0; } catch { this.best = 0; }
     this.baseX = 0;
@@ -123,6 +124,7 @@ export class Game {
         this.state = State.OVER;
         this.overAt = performance.now();
         this.saveBest();
+        if (this.onGameOver) this.onGameOver(this.score);
       }
     }
 

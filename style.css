@@ -58,3 +58,23 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
   .cam-panel { padding: 8px; gap: 6px; }
   .controls .hint { display: none; }
 }
+
+.start input { margin-top: 10px; font: inherit; font-size: 18px; padding: 10px 14px; width: 240px; text-align: center;
+  border: 2px solid #333; border-radius: 10px; background: #0d1014; color: var(--text); }
+.board { margin-top: 14px; width: 260px; max-height: 40%; overflow: auto; }
+.board h2 { margin: 0 0 6px; font-size: 16px; color: var(--accent); }
+.board ol { list-style: none; margin: 0; padding: 0; counter-reset: r; display: grid; gap: 4px; }
+.board li { counter-increment: r; display: flex; gap: 8px; justify-content: space-between; padding: 5px 10px;
+  border-radius: 8px; background: rgba(255,255,255,.06); font-size: 14px; color: var(--text); text-align: left; }
+.board li::before { content: counter(r) "."; color: var(--muted); min-width: 1.5em; }
+.board li span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board li.empty { justify-content: center; color: var(--muted); }
+.board li.empty::before { content: none; }
+.board li b { color: var(--accent); }
+.linkbtn { font: inherit; font-size: 13px; background: none; border: 0; color: var(--muted);
+  text-decoration: underline; cursor: pointer; padding: 4px; }
+.start .linkbtn { margin-top: 6px; font-weight: 400; font-size: 13px; background: none; color: var(--muted); padding: 4px; }
+.tabs { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
+.start .tab { margin: 0; font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+  background: rgba(255,255,255,.08); color: var(--muted); }
+.start .tab.active { background: var(--accent); color: #222; }

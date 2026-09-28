@@ -1,14 +1,55 @@
 import { loadSprites, Sound } from './assets.js';
-import { Game } from './game.js';
+import { Game, State } from './game.js';
+import { addScore, renderLeaderboard, resetLeaderboard } from './leaderboard.js';
 
 const $ = (id) => document.getElementById(id);
 const sound = new Sound();
 const sprites = await loadSprites();
 const game = new Game($('game'), sprites, sound);
 
+// Jugador y tabla de clasificación.
+const nameInput = $('player-name');
+try { nameInput.value = localStorage.getItem('flappy-player') || ''; } catch { /* sin almacenamiento */ }
+const playerName = () => nameInput.value.trim() || 'Anónimo';
+const startEl = $('start');
+const overlayOpen = () => !startEl.classList.contains('hidden');
+let cameraOn = false;
+
+// La partida cuenta como "sin cámara" si hubo algún salto por clic, toque o teclado.
+let runManual = false;
+let boardKind = 'camera';
+function refreshBoard() { renderLeaderboard($('lb'), boardKind); }
+function showBoard(kind) {
+  boardKind = kind;
+  document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t.dataset.kind === kind));
+  refreshBoard();
+}
+document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => showBoard(t.dataset.kind)));
+refreshBoard();
+game.onGameOver = (score) => {
+  const kind = runManual ? 'click' : 'camera';
+  addScore(kind, playerName(), score);
+  runManual = false;
+  showBoard(kind);
+  openMenu();
+};
+$('lb-reset').addEventListener('click', async () => { if (await resetLeaderboard()) refreshBoard(); });
+function closeMenu() {
+  startEl.classList.add('hidden');
+  if (game.state === State.OVER) game.reset();   // deja el pájaro listo para la nueva partida
+}
+function openMenu() {
+  refreshBoard();
+  $('start-btn').textContent = cameraOn ? 'Jugar de nuevo' : 'Activar cámara y jugar';
+  startEl.classList.remove('hidden');
+}
+$('menu-btn').addEventListener('click', () => { openMenu(); nameInput.focus(); });
+
 const flashEl = $('flash');
 let flashTimer;
 function flap(fromBody) {
+  if (overlayOpen()) return;
+  if (!fromBody && (game.state === State.READY || game.state === State.PLAYING)) runManual = true;
   sound.init();
   sound.unlock();
   game.flap();
@@ -46,7 +87,15 @@ const sens = $('sensitivity');
 // El control va de "poco sensible" a "muy sensible"; se invierte a amplitud requerida.
 const amplitude = () => 1.4 - Number(sens.value);
 
+$('noc-btn').addEventListener('click', () => {
+  try { localStorage.setItem('flappy-player', nameInput.value.trim()); } catch { /* sin almacenamiento */ }
+  closeMenu();
+  sound.init();
+});
+
 $('start-btn').addEventListener('click', async () => {
+  try { localStorage.setItem('flappy-player', nameInput.value.trim()); } catch { /* sin almacenamiento */ }
+  if (cameraOn) { closeMenu(); return; }
   const btn = $('start-btn');
   btn.disabled = true;
   $('start-error').textContent = '';
@@ -60,6 +109,7 @@ $('start-btn').addEventListener('click', async () => {
     $('start').classList.add('hidden');
     setStatus('Iniciando cámara…');
     await tracker.start();
+    cameraOn = true;
   } catch (e) {
     console.error(e);
     $('start').classList.remove('hidden');
