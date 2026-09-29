@@ -3,7 +3,7 @@
 const W = 288;
 const H = 512;
 const BASE_Y = Math.floor(H * 0.79);   // 404
-const PIPE_GAP = 230;
+const PIPE_GAP = 280;
 const PIPE_W = 52;
 const PIPE_H = 320;
 const PIPE_SPACING = 200;              // px entre tubos (original: 144)
