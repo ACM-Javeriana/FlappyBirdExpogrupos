@@ -14,6 +14,7 @@ const playerName = () => nameInput.value.trim() || 'Anónimo';
 const startEl = $('start');
 const overlayOpen = () => !startEl.classList.contains('hidden');
 let cameraOn = false;
+let manualMode = false;
 
 // La partida cuenta como "sin cámara" si hubo algún salto por clic, toque o teclado.
 let runManual = false;
@@ -40,7 +41,7 @@ function closeMenu() {
 }
 function openMenu() {
   refreshBoard();
-  $('start-btn').textContent = cameraOn ? 'Jugar de nuevo' : 'Activar cámara y jugar';
+  $('start-btn').textContent = cameraOn || manualMode ? 'Jugar de nuevo' : 'Activar cámara y jugar';
   startEl.classList.remove('hidden');
 }
 $('menu-btn').addEventListener('click', () => { openMenu(); nameInput.focus(); });
@@ -89,13 +90,14 @@ const amplitude = () => 1.4 - Number(sens.value);
 
 $('noc-btn').addEventListener('click', () => {
   try { localStorage.setItem('flappy-player', nameInput.value.trim()); } catch { /* sin almacenamiento */ }
+  manualMode = true;
   closeMenu();
   sound.init();
 });
 
 $('start-btn').addEventListener('click', async () => {
   try { localStorage.setItem('flappy-player', nameInput.value.trim()); } catch { /* sin almacenamiento */ }
-  if (cameraOn) { closeMenu(); return; }
+  if (cameraOn || manualMode) { closeMenu(); return; }
   const btn = $('start-btn');
   btn.disabled = true;
   $('start-error').textContent = '';
@@ -110,6 +112,7 @@ $('start-btn').addEventListener('click', async () => {
     setStatus('Iniciando cámara…');
     await tracker.start();
     cameraOn = true;
+    manualMode = false;
   } catch (e) {
     console.error(e);
     $('start').classList.remove('hidden');
