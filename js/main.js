@@ -32,7 +32,14 @@ game.onGameOver = (score) => {
   addScore(kind, playerName(), score);
   runManual = false;
   showBoard(kind);
-  openMenu();
+  if (kind === 'camera' && cameraOn) {
+    const endedAt = game.overAt;
+    setTimeout(() => {
+      if (game.state === State.OVER && game.overAt === endedAt) game.reset();
+    }, 1500);
+  } else {
+    openMenu();
+  }
 };
 $('lb-reset').addEventListener('click', async () => { if (await resetLeaderboard()) refreshBoard(); });
 function closeMenu() {
